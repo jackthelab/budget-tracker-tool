@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  firstName String
+  lastName String
+  email String @unique
+  buckets Bucket[]
+  transactions Transaction[]
+}
+
+model Bucket {
+  id Int @id @default(autoincrement())
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId Int
+  name String
+  goalAmount Float
+  currentAmount Float
+  recurring Boolean
+  transactions Transaction[]
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId Int
+  bucket Bucket? @relation(fields: [bucketId], references: [id])
+  bucketId Int?
+  withdraw Boolean
+  amount Float
+}
+
+
