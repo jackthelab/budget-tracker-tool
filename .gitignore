@@ -1,3 +1,5 @@
 node_modules
 
+budget-tracker-fed/node_modules
+
 .env
