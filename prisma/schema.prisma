@@ -27,6 +27,7 @@ model Bucket {
   goalAmount Float
   currentAmount Float
   recurring Boolean
+  fixed Boolean
   transactions Transaction[]
 }
 
