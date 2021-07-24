@@ -1,26 +1,23 @@
-require('dotenv').config();
-
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
 const express = require('express');
+const router = express.Router();
 const app = express();
+
 const jsonParser = express.json();
 
-const cors = require('cors');
-app.use(cors());
-
-const port = process.env.PORT || 3000;
-
+// home route
 app.get('/', (req, res) => {
   res.send("Hello Budgeters!");
-})
+});
 
+// user routes
+
+// get all users
 app.get('/users', async (req, res) => {
   const users = await prisma.user.findMany({})
   res.json(users);
 })
 
+// create user
 app.post('/users', jsonParser, async (req, res) => {
 
   try {
@@ -42,8 +39,4 @@ app.post('/users', jsonParser, async (req, res) => {
     console.log(req.body);
   }
   
-})
-
-app.listen(port, () => {
-  console.log(`Listening on port ${ port }`);
 })
