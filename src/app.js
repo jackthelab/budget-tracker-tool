@@ -10,28 +10,7 @@ const Mutation = require('./resolvers/Mutation');
 
 const resolvers = { 
   Query,
-
-  Mutation: {
-    createUser: (parent, args) => {
-      const user = {
-        id: Math.floor(Math.random() * 33353235323435),
-        firstName: args.firstName,
-        lastName: args.lastName,
-        email: args.email
-      }
-      console.log(`${ user.email } account created`)
-      return user
-    },
-    
-  },
-
-  User: {
-    id: (parent) => parent.id,
-    firstName: (parent) => parent.firstName,
-    lastName: (parent) => parent.lastName,
-    email: (parent) => parent.email
-  }
-
+  Mutation,
 }
 
 const prisma = new PrismaClient();
