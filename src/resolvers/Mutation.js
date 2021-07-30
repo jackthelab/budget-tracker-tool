@@ -14,27 +14,17 @@ async function createUser(parent, { firstName, lastName, email }, { prisma } ) {
 
 async function updateUser (parent, args, { prisma }) {
 
-  let updatedData;
+  let updatedUserData = {};
 
-  // args.firstName ? updatedUser.firstName = args.firstName : null
-  // args.lastName ? updatedUser.lastName = args.lastName : null
-  // args.email ? updatedUser.email = args.email : null
-
-  if (args.firstName && args.lastName && args.email) {
-    updatedData = {
-      firstName: args.firstName,
-      lastName: args.lastName,
-      email: args.email
-    }
-  }
-
-  // need to build other conditionals and / or find better way to modify updatedData object
+  args.firstName ? updatedUserData.firstName = args.firstName : null
+  args.lastName ? updatedUserData.lastName = args.lastName : null
+  args.email ? updatedUserData.email = args.email : null
 
   const updateUser = await prisma.user.update({
     where: {
       id: parseInt(args.id)
     },
-    data: updatedData
+    data: updatedUserData
   })
 
   return updateUser
