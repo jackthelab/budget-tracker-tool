@@ -15,6 +15,7 @@ model User {
   firstName String
   lastName String
   email String @unique
+  password String 
   buckets Bucket[]
   transactions Transaction[]
 }

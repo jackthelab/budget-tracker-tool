@@ -1,14 +1,51 @@
-async function createUser(parent, { firstName, lastName, email }, { prisma } ) {
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { getUserId } = require('../utils');
+const APP_SECRET = process.env.APP_SECRET;
 
-  const user = {
-    firstName: firstName,
-    lastName: lastName,
-    email: email
+async function signUp(parent, args, { prisma } ) {
+
+  const password = await bcrypt.hash(args.password, 10)
+
+  const newUser = {
+    ...args,
+    password
   }
 
-  const newUser = await prisma.user.create({ data: user })
+  const user = await prisma.user.create({ data: newUser })
 
-  return newUser
+  const token = jwt.sign({ userId: newUser.id }, APP_SECRET)
+
+  return {
+    token,
+    user
+  }
+
+}
+
+async function login(parent, args, { prisma }) {
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: args.email
+    }
+  })
+
+  if(!user) {
+    throw new Error('No such user found')
+  }
+
+  const valid = await bcrypt.compare(args.password, user.password)
+  if(!valid) {
+    throw new Error('Invalid password')
+  }
+
+  const token = jwt.sign({ userId: user.id }, APP_SECRET)
+
+  return {
+    token,
+    user
+  }
 
 }
 
@@ -40,7 +77,8 @@ async function deleteUser(parent, { id }, { prisma }) {
 }
 
 module.exports = {
-  createUser,
+  signUp,
+  login,
   updateUser,
-  deleteUser
+  deleteUser,
 }
