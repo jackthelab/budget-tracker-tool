@@ -14,8 +14,26 @@ const user = (parent, { id }, { prisma }, info) => {
   })
 }
 
+const bucket = (parent, { id }, { prisma }) => {
+  return prisma.bucket.findUnique({
+    where: {
+      id: parseInt(id)
+    }
+  })
+}
+
+const transaction = (parent, { id }, { prisma }) => {
+  return prisma.bucket.findUnique({
+    where: {
+      id: parseInt(id)
+    }
+  })
+}
+
 module.exports = {
   info,
   users,
-  user
+  user,
+  bucket,
+  transaction
 }

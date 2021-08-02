@@ -2,6 +2,8 @@ type Query {
     info: String!
     users: [User!]!
     user(id: ID!): User
+    transaction(id: ID!): Bucket!
+    bucket(id: ID!): Bucket!
   }
 
   type Mutation {
@@ -9,6 +11,7 @@ type Query {
     login(email: String!, password: String!): AuthPayload
     updateUser(id: ID!, firstName: String, lastName: String, email: String): User
     deleteUser(id: ID!): User
+    createBucket(name: String!, goalAmount: Float!, currentAmount: Float!, recurring: Boolean, fixed: Boolean): Bucket
   }
 
   type User {
@@ -16,9 +19,21 @@ type Query {
     firstName: String!
     lastName: String!
     email: String!
+    buckets: [Bucket!]
+    transactions: [Transaction!]
   }
 
   type AuthPayload {
     token: String
     user: User
+  }
+
+  type Bucket {
+    id: ID!
+    owner: User!
+  }
+
+  type Transaction {
+    id: ID!
+    owner: User!
   }

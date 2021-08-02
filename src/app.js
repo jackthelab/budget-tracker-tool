@@ -8,10 +8,16 @@ const { getUserId } = require('./utils');
 // resolver files
 const Query = require('./resolvers/Query');
 const Mutation = require('./resolvers/Mutation');
+const User = require('./resolvers/User');
+const Bucket = require('./resolvers/Bucket');
+const Transaction = require('./resolvers/Transaction')
 
 const resolvers = { 
   Query,
   Mutation,
+  User,
+  Bucket,
+  Transaction
 }
 
 const prisma = new PrismaClient();

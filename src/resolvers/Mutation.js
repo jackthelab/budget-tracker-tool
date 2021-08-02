@@ -76,9 +76,28 @@ async function deleteUser(parent, { id }, { prisma }) {
   })
 }
 
+async function createBucket(parent, args, context) {
+  const { userId, prisma } = context;
+
+  const newBucket = await prisma.bucket.create({
+    data: {
+      owner: { connect: { id: userId } },
+      name: args.name,
+      goalAmount: args.goalAmount,
+      currentAmount: args.currentAmount || 0,
+      recurring: args.recurring || false,
+      fixed: args.fixed || false,
+    }
+  })
+
+  return newBucket
+
+}
+
 module.exports = {
   signUp,
   login,
   updateUser,
   deleteUser,
+  createBucket
 }
