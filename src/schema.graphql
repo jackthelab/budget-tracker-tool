@@ -12,6 +12,8 @@ type Query {
     updateUser(id: ID!, firstName: String, lastName: String, email: String): User
     deleteUser(id: ID!): User
     createBucket(name: String!, goalAmount: Float!, currentAmount: Float!, recurring: Boolean, fixed: Boolean): Bucket
+    updateBucket(id: ID!, name: String, goalAmount: Float, currentAmount: Float, recurring: Boolean, fixed: Boolean): Bucket
+    deleteBucket(id: ID!): String
   }
 
   type User {
@@ -19,7 +21,7 @@ type Query {
     firstName: String!
     lastName: String!
     email: String!
-    buckets: [Bucket!]
+    buckets: [Bucket!]!
     transactions: [Transaction!]
   }
 
@@ -34,6 +36,8 @@ type Query {
     name: String!
     goalAmount: Float!
     currentAmount: Float!
+    recurring: Boolean
+    fixed: Boolean
   }
 
   type Transaction {

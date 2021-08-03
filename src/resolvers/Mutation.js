@@ -106,10 +106,48 @@ async function createBucket(parent, args, context) {
 
 }
 
+async function updateBucket(parent, args, context) {
+  
+  const { prisma } = context
+
+  let updateBucketData = {}
+
+  args.name ? updateBucketData.name = args.name : null
+  args.currentAmount ? updateBucketData.currentAmount = args.currentAmount : null
+  args.goalAmount ? updateBucketData.goalAmount = args.goalAmount : null
+  args.recurring ? updateBucketData.recurring = args.recurring : null
+  args.fixed ? updateBucketData.fixed = args.fixed : null
+
+  const updateBucket = await prisma.bucket.update({
+    where: {
+      id: parseInt(args.id)
+    },
+    data: updateBucketData
+  })
+
+  return updateBucket;
+
+}
+
+async function deleteBucket(parent, args, context) {
+  const { prisma } = context
+
+  const deleteBucket = await prisma.bucket.delete({
+    where: {
+      id: parseInt(args.id)
+    }
+  })
+
+  return `You've deleted ${deleteBucket.name}`
+
+}
+
 module.exports = {
   signUp,
   login,
   updateUser,
   deleteUser,
-  createBucket
+  createBucket,
+  updateBucket,
+  deleteBucket
 }
