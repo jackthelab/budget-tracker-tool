@@ -31,6 +31,9 @@ type Query {
   type Bucket {
     id: ID!
     owner: User!
+    name: String!
+    goalAmount: Float!
+    currentAmount: Float!
   }
 
   type Transaction {

@@ -16,6 +16,17 @@ async function signUp(parent, args, { prisma } ) {
 
   const token = jwt.sign({ userId: newUser.id }, APP_SECRET)
 
+  const firstBucket = await prisma.bucket.create({
+    data: {
+      owner: { connect: { id: user.id } },
+      name: `${user.firstName}'s First Bucket`,
+      goalAmount: 1000,
+      currentAmount: 0,
+      recurring: false,
+      fixed: false,
+    }
+  })
+
   return {
     token,
     user
@@ -76,6 +87,7 @@ async function deleteUser(parent, { id }, { prisma }) {
   })
 }
 
+// need to work on this... not sure why it's not picking up userId right now
 async function createBucket(parent, args, context) {
   const { userId, prisma } = context;
 

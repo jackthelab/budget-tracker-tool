@@ -1,5 +1,6 @@
 const owner = (parent, args, { prisma }) => {
-  return context.prisma.bucket.findUnique({
+
+  return prisma.bucket.findUnique({
     where: {
       id: parent.id
     }
