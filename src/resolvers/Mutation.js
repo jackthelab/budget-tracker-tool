@@ -19,7 +19,7 @@ async function signUp(parent, args, { prisma } ) {
   const firstBucket = await prisma.bucket.create({
     data: {
       owner: { connect: { id: user.id } },
-      name: `${user.firstName}'s First Bucket`,
+      name: `${user.firstName}'s Emergency Fund`,
       goalAmount: 1000,
       currentAmount: 0,
       recurring: false,
