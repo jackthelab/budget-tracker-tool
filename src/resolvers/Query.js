@@ -22,6 +22,17 @@ const bucket = (parent, { id }, { prisma }) => {
   })
 }
 
+async function buckets(parent, args, context) {
+  
+  const { prisma, userId } = context;
+
+  return prisma.bucket.findMany({
+    where: {
+      ownerId: userId
+    }
+  })
+}
+
 const transaction = (parent, { id }, { prisma }) => {
   return prisma.bucket.findUnique({
     where: {
@@ -30,10 +41,23 @@ const transaction = (parent, { id }, { prisma }) => {
   })
 }
 
+async function transactions(parent, args, context) {
+  const { prisma, userId } = context;
+
+  const userTransactions = await prisma.transaction.findMany({
+    where: {
+      ownerId: userId
+    }
+  })
+
+  return userTransactions;
+}
+
 module.exports = {
   info,
   users,
   user,
   bucket,
+  buckets,
   transaction
 }
