@@ -6,6 +6,15 @@ const owner = (parent, args, { prisma }) => {
   }).owner();
 }
 
+const bucket = (parent, args, { prisma }) => {
+  return prisma.transaction.findUnique({
+    where: {
+      id: parent.id
+    }
+  }).bucket();
+}
+
 module.exports = {
-  owner
+  owner,
+  bucket
 }
