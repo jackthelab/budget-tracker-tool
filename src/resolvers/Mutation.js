@@ -142,6 +142,25 @@ async function deleteBucket(parent, args, context) {
 
 }
 
+async function createTransaction(parent, args, context) {
+  const { prisma, userId } = context;
+
+  const newTransaction = await prisma.transaction.create({
+    data: {
+      owner: { connect: { id: userId } },
+      bucket: args.bucketId ? { connect: { id: parseInt(args.bucketId) } } : null,
+      withdraw: args.withdraw || false,
+      amount: args.amount
+    }
+  })
+
+  if(args.bucketId) {
+    // update bucket current amount 
+  }
+
+  return newTransaction
+}
+
 module.exports = {
   signUp,
   login,
@@ -149,5 +168,6 @@ module.exports = {
   deleteUser,
   createBucket,
   updateBucket,
-  deleteBucket
+  deleteBucket,
+  createTransaction
 }

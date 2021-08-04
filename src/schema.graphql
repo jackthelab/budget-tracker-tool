@@ -16,6 +16,7 @@ type Query {
     createBucket(name: String!, goalAmount: Float!, currentAmount: Float!, recurring: Boolean, fixed: Boolean): Bucket
     updateBucket(id: ID!, name: String, goalAmount: Float, currentAmount: Float, recurring: Boolean, fixed: Boolean): Bucket
     deleteBucket(id: ID!): String
+    createTransaction(bucketId: ID, withdraw: Boolean, amount: Float!): Transaction
   }
 
   type User {
