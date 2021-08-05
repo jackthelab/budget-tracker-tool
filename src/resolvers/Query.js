@@ -33,6 +33,23 @@ async function buckets(parent, args, context) {
   })
 }
 
+async function bucketAmount(parent, args, context) {
+  const { id } = args;
+  const { prisma } = context;
+
+  let bucketAmount = 0;
+
+  const bucketTransactions = await prisma.bucket.findUnique({
+    where: {
+      id: parseInt(id)
+    }
+  }).transactions()
+
+  bucketTransactions.forEach( t => bucketAmount += t.amount );
+
+  return bucketAmount;
+}
+
 const transaction = (parent, { id }, { prisma }) => {
   return prisma.bucket.findUnique({
     where: {
@@ -59,5 +76,6 @@ module.exports = {
   user,
   bucket,
   buckets,
+  bucketAmount,
   transaction
 }

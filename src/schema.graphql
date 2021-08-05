@@ -5,6 +5,7 @@ type Query {
     transaction(id: ID!): Bucket!
     bucket(id: ID!): Bucket!
     buckets: [Bucket!]
+    bucketAmount(id: ID!): Float!
     transactions: [Transaction!]
   }
 
