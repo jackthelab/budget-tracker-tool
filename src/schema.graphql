@@ -14,8 +14,8 @@ type Query {
     login(email: String!, password: String!): AuthPayload
     updateUser(id: ID!, firstName: String, lastName: String, email: String): User
     deleteUser(id: ID!): User
-    createBucket(name: String!, goalAmount: Float!, startAmount: Float, recurring: Boolean, fixed: Boolean): Bucket
-    updateBucket(id: ID!, name: String, goalAmount: Float, currentAmount: Float, recurring: Boolean, fixed: Boolean): Bucket
+    createBucket(name: String!, goalAmount: Float!, startAmount: Float, recurring: Boolean, emergency: Boolean): Bucket
+    updateBucket(id: ID!, name: String, goalAmount: Float, currentAmount: Float, recurring: Boolean, emergency: Boolean): Bucket
     deleteBucket(id: ID!): String
     createTransaction(bucketId: ID, expense: Boolean, amount: Float!, reason: String!): Transaction
     deleteTransaction(id: ID!): String
@@ -42,7 +42,7 @@ type Query {
     goalAmount: Float!
     currentAmount: Float
     recurring: Boolean
-    fixed: Boolean
+    emergency: Boolean
     transactions: [Transaction!]!
   }
 

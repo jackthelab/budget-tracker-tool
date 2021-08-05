@@ -19,11 +19,11 @@ async function signUp(parent, args, { prisma } ) {
   const firstBucket = await prisma.bucket.create({
     data: {
       owner: { connect: { id: user.id } },
-      name: `${user.firstName}'s Emergency Fund`,
+      name: `${user.firstName}'s First Fund`,
       goalAmount: 1000,
       currentAmount: 0,
       recurring: false,
-      fixed: false,
+      emergency: false,
     }
   })
 
@@ -97,7 +97,7 @@ async function createBucket(parent, args, context) {
       name: args.name,
       goalAmount: args.goalAmount,
       recurring: args.recurring || false,
-      fixed: args.fixed || false,
+      emergency: args.emergency || false,
     }
   })
 
@@ -126,7 +126,7 @@ async function updateBucket(parent, args, context) {
   args.name ? updateBucketData.name = args.name : null
   args.goalAmount ? updateBucketData.goalAmount = args.goalAmount : null
   args.recurring ? updateBucketData.recurring = args.recurring : null
-  args.fixed ? updateBucketData.fixed = args.fixed : null
+  args.emergency ? updateBucketData.emergency = args.emergency : null
 
   const updateBucket = await prisma.bucket.update({
     where: {

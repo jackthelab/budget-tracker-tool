@@ -27,7 +27,7 @@ model Bucket {
   name String
   goalAmount Float
   recurring Boolean
-  fixed Boolean
+  emergency Boolean @default(false)
   transactions Transaction[]
 }
 
