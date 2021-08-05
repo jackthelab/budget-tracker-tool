@@ -25,24 +25,7 @@ async function bucket(parent, { id }, { prisma }) {
     }
   })
 
-  const sumAmounts = (runningSum, transactions) => {
-    transactions.forEach( t => runningSum += t.amount);
-
-    return runningSum
-  }
-
-  const bucketTransactions = await prisma.bucket.findUnique({
-    where: {
-      id: parseInt(id)
-    }
-  }).transactions()
-
-  const bucketAmount = await sumAmounts(0, bucketTransactions);
-
-  return {
-    ...bucket,
-    currentAmount: bucketAmount 
-  }
+  return bucket;
 }
 
 async function buckets(parent, args, context) {
@@ -52,6 +35,9 @@ async function buckets(parent, args, context) {
   const buckets = await prisma.bucket.findMany({
     where: {
       ownerId: userId
+    },
+    include: {
+      transactions: true
     }
   })
 
@@ -87,5 +73,6 @@ module.exports = {
   user,
   bucket,
   buckets,
-  transaction
+  transaction,
+  transactions
 }

@@ -40,7 +40,6 @@ type Query {
     owner: User!
     name: String!
     goalAmount: Float!
-    currentAmount: Float
     recurring: Boolean
     emergency: Boolean
     transactions: [Transaction!]!
