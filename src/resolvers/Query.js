@@ -1,43 +1,35 @@
-const info = () => {
-  return "This is a budget tool GraphQL API"
+async function info() {
+  return await "This is a budget tool GraphQL API"
 }
 
-const users = (parent, args, { prisma }, info) => {
-  return prisma.user.findMany()
+async function users(parent, args, { prisma }) {
+  const users = await prisma.user.findMany()
+
+  return users;
 }
 
-const user = (parent, { id }, { prisma }, info) => {
-  return prisma.user.findUnique({
+async function user(parent, { id }, { prisma }) {
+  const user = await prisma.user.findUnique({
     where: {
       id: parseInt(id)
     }
   })
+
+  return user;
 }
 
-const bucket = (parent, { id }, { prisma }) => {
-  return prisma.bucket.findUnique({
+async function bucket(parent, { id }, { prisma }) {
+  const bucket = await prisma.bucket.findUnique({
     where: {
       id: parseInt(id)
     }
   })
-}
 
-async function buckets(parent, args, context) {
-  
-  const { prisma, userId } = context;
+  const sumAmounts = (runningSum, transactions) => {
+    transactions.forEach( t => runningSum += t.amount);
 
-  return prisma.bucket.findMany({
-    where: {
-      ownerId: userId
-    }
-  })
-}
-
-async function bucketAmount(parent, args, context) {
-  const { id } = args;
-  const { prisma } = context;
-
-  let bucketAmount = 0;
+    return runningSum
+  }
 
   const bucketTransactions = await prisma.bucket.findUnique({
     where: {
@@ -45,17 +37,36 @@ async function bucketAmount(parent, args, context) {
     }
   }).transactions()
 
-  bucketTransactions.forEach( t => bucketAmount += t.amount );
+  const bucketAmount = await sumAmounts(0, bucketTransactions);
 
-  return bucketAmount;
+  return {
+    ...bucket,
+    currentAmount: bucketAmount 
+  }
 }
 
-const transaction = (parent, { id }, { prisma }) => {
-  return prisma.bucket.findUnique({
+async function buckets(parent, args, context) {
+  
+  const { prisma, userId } = context;
+
+  const buckets = await prisma.bucket.findMany({
+    where: {
+      ownerId: userId
+    }
+  })
+
+  return buckets;
+}
+
+async function transaction (parent, { id }, { prisma }) {
+  
+  const transaction = await prisma.bucket.findUnique({
     where: {
       id: parseInt(id)
     }
   })
+
+  return transaction;
 }
 
 async function transactions(parent, args, context) {
@@ -76,6 +87,5 @@ module.exports = {
   user,
   bucket,
   buckets,
-  bucketAmount,
   transaction
 }

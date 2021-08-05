@@ -5,7 +5,7 @@ type Query {
     transaction(id: ID!): Bucket!
     bucket(id: ID!): Bucket!
     buckets: [Bucket!]
-    bucketAmount(id: ID!): Float!
+    bucketAmount(id: ID!): Float
     transactions: [Transaction!]
   }
 
@@ -40,7 +40,7 @@ type Query {
     owner: User!
     name: String!
     goalAmount: Float!
-    currentAmount: Float!
+    currentAmount: Float
     recurring: Boolean
     fixed: Boolean
     transactions: [Transaction!]!
