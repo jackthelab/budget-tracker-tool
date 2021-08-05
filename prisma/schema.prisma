@@ -26,7 +26,6 @@ model Bucket {
   ownerId Int
   name String
   goalAmount Float
-  currentAmount Float
   recurring Boolean
   fixed Boolean
   transactions Transaction[]
@@ -38,8 +37,9 @@ model Transaction {
   ownerId Int
   bucket Bucket? @relation(fields: [bucketId], references: [id])
   bucketId Int?
-  withdraw Boolean
+  expense Boolean
   amount Float
+  reason String @default("No Reason Given")
 }
 
 

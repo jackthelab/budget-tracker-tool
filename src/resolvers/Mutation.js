@@ -96,11 +96,22 @@ async function createBucket(parent, args, context) {
       owner: { connect: { id: userId } },
       name: args.name,
       goalAmount: args.goalAmount,
-      currentAmount: args.currentAmount || 0,
       recurring: args.recurring || false,
       fixed: args.fixed || false,
     }
   })
+
+  if(args.startAmount) {
+    const firstTransaction = await prisma.transaction.create({
+      data: {
+        owner: { connect: { id: userId } },
+        bucket: { connect: { id: newBucket.id } },
+        expense: false,
+        amount: args.startAmount,
+        reason: "Initial Deposit"
+      }
+    })
+  }
 
   return newBucket
 
@@ -113,7 +124,6 @@ async function updateBucket(parent, args, context) {
   let updateBucketData = {}
 
   args.name ? updateBucketData.name = args.name : null
-  args.currentAmount ? updateBucketData.currentAmount = args.currentAmount : null
   args.goalAmount ? updateBucketData.goalAmount = args.goalAmount : null
   args.recurring ? updateBucketData.recurring = args.recurring : null
   args.fixed ? updateBucketData.fixed = args.fixed : null
@@ -145,12 +155,19 @@ async function deleteBucket(parent, args, context) {
 async function createTransaction(parent, args, context) {
   const { prisma, userId } = context;
 
+  let modifiedAmount = args.amount
+
+  if(args.expense) {
+    modifiedAmount *= -1;
+  }
+
   const newTransaction = await prisma.transaction.create({
     data: {
       owner: { connect: { id: userId } },
       bucket: args.bucketId ? { connect: { id: parseInt(args.bucketId) } } : null,
-      withdraw: args.withdraw || false,
-      amount: args.amount
+      expense: args.expense || true,
+      amount: modifiedAmount,
+      reason: args.reason
     }
   });
 
