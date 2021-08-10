@@ -175,6 +175,26 @@ async function createTransaction(parent, args, context) {
 
 }
 
+async function updateTransaction(parent, args, context) {
+  const { prisma } = context;
+
+  let updateData = {};
+
+  args.bucketId ? updateData.bucketId = args.bucketId : null;
+  args.expense ? updateData.expense = args.expense : null;
+  args.amount ? updateData.amount = args.expense : null;
+  args.reason ? updateData.reason = args.reason : null;
+
+  const updateTransaction = await prisma.transaction.update({
+    where: {
+      id: parseInt(args.id)
+    },
+    data: updateData
+  });
+
+  return updateTransaction;
+}
+
 async function deleteTransaction(parent, args, context) {
   const { prisma } = context;
 
@@ -196,5 +216,6 @@ module.exports = {
   updateBucket,
   deleteBucket,
   createTransaction,
-  deleteTransaction
+  updateTransaction,
+  deleteTransaction,
 }

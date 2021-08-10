@@ -18,6 +18,7 @@ type Query {
     updateBucket(id: ID!, name: String, goalAmount: Float, currentAmount: Float, recurring: Boolean, emergency: Boolean): Bucket
     deleteBucket(id: ID!): String
     createTransaction(bucketId: ID, expense: Boolean, amount: Float!, reason: String!): Transaction
+    updateTransaction(id: ID!, bucketId: ID, expense: Boolean, amount: Float, reason: String): Transaction
     deleteTransaction(id: ID!): String
   }
 
