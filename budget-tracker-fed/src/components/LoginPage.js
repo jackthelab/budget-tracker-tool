@@ -23,7 +23,10 @@ export const LoginPage = () => {
           <button
             type="submit"
             onClick={
-              () => console.log(`check ${loginEmail} for login or signup`)
+              (e) => {
+                e.preventDefault()
+                console.log(`check ${loginEmail} for login or signup`)
+              }
             }
           >
             Submit
